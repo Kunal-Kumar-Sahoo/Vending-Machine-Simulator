@@ -1,0 +1,84 @@
+//Uploading Menu of the program!!
+
+
+#include <stdio.h>
+#include <stdbool.h>
+struct consumer
+{
+    int size;
+    int top;
+    char *arr;
+};
+bool isFull(struct consumer p)
+{
+    if (p.top == p.size - 1)
+        return 1;   
+    return true;
+}
+bool isEmpty(struct consumer p)
+{
+    if (p.top ==-1)
+        return 1; 
+    return false;
+}
+struct consumer push(struct consumer p, char str[])
+{
+    for (int i=0;str[i]!='\0';i++)
+        p.arr[++p.top]=str[i];
+
+    return p;
+}
+
+void traverse(struct consumer p)
+{
+    for (int i=p.top;i>=0;i--)
+        printf("%c", p.arr[i]);
+    printf("\n");
+}
+
+bool continuity(){
+    printf("Do you want to continue ?\n");
+    printf("1. Yes\n");
+    printf("2. No\n");
+    int ch;
+    printf(">>> ");
+    scanf("%d",&ch);
+    switch (ch)
+    {
+    case 1:
+        return true;
+        break;
+    case 2:
+        return false;
+    
+    default:
+        printf("Invalid Input!!\n");
+        printf("The code exits with errors!!\n");
+        return false;
+        break;
+    }
+}
+int main()
+{
+    //GUI!!
+    bool ans = true;
+    while (ans){
+        printf("===================================================\n");
+        printf("\t::Welcome to PDEU Vending Machine::\n");
+        printf("===================================================\n");
+        int amt;
+        printf("\tPlease enter the money (multiple of 10)\n");
+        printf("===================================================\n");
+        printf(">>>");
+        scanf("%d",&amt);
+        if (amt%10==0){
+            printf("Welcome!!\n");
+        }
+        else{
+            printf("The entered amount cannot be accepted by the machine!\n");
+            ans = continuity();
+        }
+
+    }
+    return 0;
+}
