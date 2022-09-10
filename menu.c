@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <string.h>
-#include <process.h>
 #include <stdlib.h>
 
 struct product
