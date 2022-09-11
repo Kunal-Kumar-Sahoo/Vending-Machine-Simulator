@@ -16,38 +16,70 @@ typedef struct Product {
     Date expiry;
 } Product;
 
-typedef struct Stack {
+typedef struct TrashStack {
+    int top;
+    Product trash[CAPACITY];
+} TrashStack;
+
+TrashStack bin = {-1, {}};
+
+typedef struct CashStack {
+    int top;
+    int cash[5];
+    /*
+        Denomination    Corresponding index
+        200             0
+        100             1
+        50              2
+        20              3
+        10              4
+    */
+} CashStack;
+
+CashStack availableCash = {-1, {}};
+
+typedef struct ProductStack {
     int top;
     char name[50];
     float MRP;
-    Product p[10];
-} Stack;
+    Product p[CAPACITY];
+} ProductStack;
 
-Stack *initialize(char name[], float MRP) {
-    Stack *s = (Stack *)malloc(sizeof(Stack));
+ProductStack *initialize(char name[], float MRP) {
+    ProductStack *s = (ProductStack *)malloc(sizeof(ProductStack));
     strcpy(s->name, name);
     s->MRP = MRP;
     s->top = -1;
     return s;
 }
 
-bool checkUnderflow(Stack *s) {
+bool checkUnderflow(ProductStack *s) {
     return s->top == -1;
 }
 
-bool checkOverflow(Stack *s) {
+bool checkOverflow(ProductStack *s) {
     return s->top == CAPACITY-1;
 }
 
-void push_to_stock(Stack *s, Product p) {
+void push_to_stock(ProductStack *s, Product p) {
     if(checkOverflow(s)) {
-        printf("Product stack is full. Please refill later\n");
+        printf("Product ProductStack is full. Please refill later\n");
         return;
     }
     s->p[++s->top] = p;
 }
 
-Product pop(Stack *s) {
+void clear_bin() {
+    bin.top = -1;
+}
+
+void throwaway(Product p) {
+    if(bin.top == CAPACITY-1)
+        clear_bin();
+    bin.trash[++bin.top] = p;
+}
+
+Product pop(ProductStack *s) {
     if(checkUnderflow(s)) {
         printf("Sorry product is not available\n");
         Product tmp = {-1, {-1, -1, -1}};
@@ -56,16 +88,19 @@ Product pop(Stack *s) {
     Product p = s->p[s->top--];
     if(isExpired(p)) {
         printf("This product is expired. Fetching a new one\n");
-        pop(s);
+        throwaway(pop(s));
     }
-    return p;
+    return pop(s);
 }
 
 int main() {
+    clear_bin();
+    availableCash = {-1, {10, 10, 10, 10, 10}};
+
     printf("Enter number of products: ");
     int no_of_products; scanf("%d", &no_of_products);
     
-    Stack arr[no_of_products];
+    ProductStack arr[no_of_products];
 
     return 0;
 }
