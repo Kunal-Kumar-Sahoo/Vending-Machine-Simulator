@@ -95,7 +95,7 @@ Product pop(ProductStack *s) {
 
 int main() {
     clear_bin();
-    availableCash = {-1, 10, 10, 10, 10, 10};
+    availableCash = {-1, {10, 10, 10, 10, 10}};
 
     printf("Enter number of products: ");
     int no_of_products; scanf("%d", &no_of_products);
